@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday Olive 🎉</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&family=Noto+Sans+JP:wght@100..900&family=Parisienne&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans JP', sans-serif;
+      background: radial-gradient(circle, #ffb6c1 0%, #ffffff 100%);
+      color: #4B0082;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    header {
+      padding: 60px 20px;
+      background: transparent;
+    }
+
+    header h1 {
+      font-family: 'Parisienne', cursive;
+      font-size: 3.5rem;
+      margin: 0;
+      color: white;
+      /* slightly stronger drop shadow (only a little) */
+      text-shadow: 0 3px 6px rgba(0,0,0,0.32);
+    }
+
+    .header-border {
+      border-top: 3px solid gold;
+      margin: 0 20%;
+    }
+
+    section {
+      padding: 50px 20px;
+    }
+
+    /* Envelope */
+    .envelope-container {
+      margin: 40px auto;
+      max-width: 500px;
+      position: relative;
+    }
+
+    .envelope {
+      width: 100%;
+      background: pink;
+      position: relative;
+      border: 2px solid gold;
+      border-radius: 10px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Placeholder shown on top of the pink envelope before opening */
+    .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none; /* clicks pass through to the open button */
+      z-index: 2;
+      margin-bottom: 10px;
+    }
+    .placeholder-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,0.8);
+      background: #ffeef3;
+    }
+    .placeholder-text {
+      margin-top: 12px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    }
+
+    /* Letter now inside envelope */
+    .letter {
+      background: white;
+      padding: 0 20px;
+      width: 100%;
+      max-height: 0;
+      overflow: hidden;
+      border: 2px solid pink;
+      border-radius: 8px;
+      opacity: 0;
+      transition: max-height 0.8s ease, opacity 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+      box-sizing: border-box; /* ensures padding/border don't make it bigger than the pink envelope */
+    }
+
+    .letter.open {
+      margin-top: 15px;
+      opacity: 1;
+      padding: 20px; /* same padding as the pink envelope on all sides */
+    }
+
+    .heart-button {
+      margin-top: 15px;
+      background: pink;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+    }
+
+    /* Music button floating */
+    .music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: gold;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      color: #4B0082;
+      cursor: pointer;
+      z-index: 1000;
+      /* glow removed as requested - just let it be yellow */
+    }
+    /* ensure the music button does NOT glow on hover */
+    .music-btn:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Sparkles */
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: gold;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: float 5s linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    /* Buttons general */
+    button {
+      background: gold;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      margin: 10px;
+      font-weight: bold;
+      color: #4B0082;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px gold, 0 0 25px pink;
+    }
+
+    /* Surprise text */
+    .surprise {
+      margin-top: 20px;
+      font-size: 1.3rem;
+      display: none;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    /* Compliment box */
+    #complimentBox {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: #ff1493;
+    }
+
+    /* Photo gallery */
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .gallery img {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border: 3px solid gold;
+      border-radius: 15px;
+      transition: transform 0.3s;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.1);
+    }
+
+    /* Cake */
+    .cake {
+      margin: 80px auto 40px;
+      width: 200px;
+      height: auto;
+      background: transparent;
+      position: relative;
+    }
+
+    .layer {
+      margin: 0 auto;
+      height: 55px;
+      background: linear-gradient(#ffc0cb, #ff9bb0);
+      /* removed yellow outline from cake as requested */
+      border: none;
+      border-radius: 12px;
+      position: relative;
+    }
+
+    .layer.top { width: 100px; }
+    .layer.middle { width: 140px; margin-top: -8px; }
+    .layer.bottom { width: 180px; margin-top: -8px; }
+
+    .candle {
+      width: 10px;
+      height: 40px;
+      background: white;
+      position: absolute;
+      top: -45px;
+      left: 50%;
+      transform: translateX(-50%);
+      /* removed yellow outline from candle too */
+      border: none;
+      border-radius: 2px;
+      cursor: pointer; /* clickable target is the candle now */
+    }
+
+    /* class to hide the flame when candle is "unlit" */
+    .candle.unlit .flame {
+      display: none;
+    }
+
+    .flame {
+      width: 16px;
+      height: 16px;
+      background: gold;
+      border-radius: 50%;
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: flicker 1s infinite;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.28); /* slightly stronger shadow (only a little) */
+    }
+
+    @keyframes flicker {
+      0% {opacity: 1;}
+      50% {opacity: 0.5;}
+      100% {opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎂 Happy Birthday Olive 🎂</h1>
+  </header>
+  <div class="header-border"></div>
+
+  <!-- Envelope -->
+  <section>
+    <h2>💌 A Letter for You</h2>
+    <div class="envelope-container">
+      <div class="envelope">
+        <!-- Placeholder (image + text) visible before opening; disappears on open and returns on close -->
+        <div class="placeholder" id="placeholder">
+          <img src="https://printyourdesign.eu/wp-content/uploads/2022/06/open-me-happiness-inside-rounded-lines-rose-and-black-circle-sticker-design-online.png" alt="Olive placeholder" class="placeholder-img">
+          <div class="placeholder-text">Something special within</div>
+        </div>
+
+        <div class="letter" id="letterBox">
+          <!-- WRITE YOUR LETTER HERE -->
+          Happy 20th Birthday, Olive! 🎉✨
+          
+          Olive, where do I even start? You’re more than just my best friend! You’re my sister in every sense of the word. From secondary school till now, we’ve grown together, laughed until our stomachs hurt, shared secrets, and carried each other through so much. You’re such a kind soul, yet so chaotic in the best way possible. Your quirks, your boundless energy, your charisma, your patience, your laughter that fills any room. Everything about you makes life brighter. You remind me every day that joy is meant to be loud, messy, and beautiful. As you step into this new decade, I just want you to know how deeply loved you are. I’m so proud of the person you’ve become, and I can’t wait to see all the magic you’ll create in your 20s. Here’s to more laughter, more chaos, more love, and more unforgettable memories together. Happy birthday, Olive. I love you endlessly. ❤️ — Love Olivia
+          <br><br>
+          <button onclick="closeLetter()">Close</button>
+        </div>
+      </div>
+      <button class="heart-button" onclick="openLetter()">❤ Open Me</button>
+    </div>
+  </section>
+
+  <!-- Cake -->
+  <section>
+    <h2>🎂 Your Birthday Cake</h2>
+    <div class="cake" id="cake">
+      <div class="layer top"></div>
+      <div class="layer middle"></div>
+      <div class="layer bottom"></div>
+      <!-- added id so clicking the candle toggles lit/unlit (not the flame directly) -->
+      <div class="candle" id="candle">
+        <div class="flame" id="flame" title="Click the candle to blow out 💨 & click again to relight 🔥"></div>
+      </div>
+    </div>
+    <p>Click the candle to blow out 💨 & click again to relight 🔥</p>
+  </section>
+
+  <!-- Fun surprises -->
+  <section>
+    <h2>🎉 Fun Surprises 🎉</h2>
+    <button onclick="showSurprise()">Click for a Surprise 🎁</button>
+    <button>A button that does nothing 🎊</button>
+    <button onclick="generateCompliment()">Get a Compliment</button>
+    <div class="surprise" id="surpriseMessage">
+      🌟 You're the most amazing person ever! I love you so much 🌟
+    </div>
+    <div id="complimentBox"></div>
+  </section>
+
+  <!-- Photo gallery -->
+  <section>
+    <h2>📸 Memories With You</h2>
+    <div class="gallery">
+      <img src="WhatsApp Image 2025-08-31 at 22.09.43_de07ba35.jpg" alt="Olive 1">
+      <img src="WhatsApp Image 2025-08-31 at 22.10.52_f50998f1.jpg" alt="Olive 2">
+      <img src="WhatsApp Image 2025-08-31 at 22.09.47_24915c4a.jpg" alt="Olive 3">
+    </div>
+  </section>
+
+  <!-- Floating Music Button -->
+  <button class="music-btn" onclick="toggleMusic()">🎵 Music</button>
+
+  <audio id="bgMusic" loop>
+  <source src="the-coconut-song-da-coconut-nut-128-ytshorts.savetube.me.mp3" type="audio/mp3">
+  </audio>
+
+
+  <script>
+    // Letter functions (inside envelope, auto height)
+    function openLetter() {
+      const letter = document.getElementById("letterBox");
+      const placeholder = document.getElementById("placeholder");
+      // hide placeholder when opening
+      if (placeholder) placeholder.style.display = "none";
+
+      letter.classList.add("open");
+      requestAnimationFrame(() => {
+        letter.style.maxHeight = letter.scrollHeight + "px";
+      });
+    }
+
+    function closeLetter() {
+      const letter = document.getElementById("letterBox");
+      const placeholder = document.getElementById("placeholder");
+      letter.style.maxHeight = 0;
+      letter.classList.remove("open");
+      // return the placeholder after the close transition finishes
+      setTimeout(() => {
+        if (placeholder) placeholder.style.display = "flex";
+      }, 450); // slightly more than the padding transition so it looks smooth
+    }
+
+    // Surprise
+    function showSurprise() {
+      document.getElementById('surpriseMessage').style.display = 'block';
+    }
+
+    // Compliments
+    const compliments = [
+      "You shine brighter than the stars ✨",
+      "You're pure magic, Olive 🌸",
+      "The world is better with you in it 💕",
+      "You radiate joy everywhere you go 🌟",
+      "Your smile could light up a whole city 🌆",
+      "You’re the definition of good vibes only 🌈",
+      "Every moment with you feels golden ✨",
+      "You make ordinary days feel extraordinary 🌼",
+      "You’re a walking ray of sunshine ☀️",
+      "Your energy is contagious 🔥",
+      "You make chaos look beautiful 🎨",
+      "The universe definitely flexed when it made you 🌌",
+      "You could outshine the northern lights 🌙",
+      "You make laughter feel louder and love feel deeper 💖",
+      "You’re everyone’s favorite kind of unexpected 🌟",
+      "Your soul sparkles in ways words can’t explain ✨",
+      "You turn every room into a celebration 🎉",
+      "Your presence is a masterpiece 🖼️",
+      "You’re proof that magic exists in human form 🪄",
+      "You’re sweeter than every dessert combined 🍰",
+      "You’re effortlessly unforgettable 🌺",
+      "You’re like a playlist with only bangers 🎶",
+      "You’re the plot twist everyone hopes for 📖",
+      "Your aura feels like home 🏡",
+      "You’re chaos and comfort in the most perfect mix 💫",
+      "You’re the friend everyone wishes they had 💕",
+      "Your laugh could fix bad days instantly 🌞",
+      "You’re golden inside and out 🏆",
+      "You’re brighter than a billion fireflies 🪲✨",
+      "You’re like coffee—energizing and addictive ☕",
+      "You turn little moments into lifelong memories 📸",
+      "You’re the sparkle that makes the world less dull 💎",
+      "You glow differently, Olive 💐",
+      "You’re joy in human form 🥰",
+      "You make the word ‘amazing’ jealous 🌹",
+      "You’re an endless adventure waiting to happen 🗺️",
+      "Your kindness makes the world softer 🌷",
+      "You’re effortlessly iconic 👑",
+      "You’re better than the first sip of cold water on a hot day 💦",
+      "You’re like glitter—impossible to forget ✨",
+      "You’re the kind of rare people write poems about 📜",
+      "You’re electric ⚡",
+      "Your heart is the prettiest thing about you 💞",
+      "You’re like a sunrise—always worth looking forward to 🌅",
+      "Your chaos is everyone’s favorite soundtrack 🎶",
+      "You make patience look like power 🌿",
+      "You’re the human version of confetti 🎊",
+      "You’re timeless ⏳",
+      "You’re Olive—already the best compliment 🌻"
+];
+
+
+    function generateCompliment() {
+      const box = document.getElementById("complimentBox");
+      const random = compliments[Math.floor(Math.random() * compliments.length)];
+      box.textContent = random;
+    }
+
+    // Music
+    function toggleMusic() {
+      const music = document.getElementById("bgMusic");
+      if (music.paused) {
+        music.play();
+      } else {
+        music.pause();
+      }
+    }
+
+
+    // Candle click toggles the candle's lit/unlit class (so the candle is the clickable target, not the flame)
+    const candle = document.getElementById("candle");
+    if (candle) {
+      candle.addEventListener("click", () => {
+        candle.classList.toggle("unlit");
+      });
+    }
+
+  </script>
+</body>
+</html>
